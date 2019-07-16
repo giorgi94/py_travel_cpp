@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
-#include <python3.6m/Python.h>
+#include <Python.h>
 #include "binomial.h"
 #include "travel.h"
 
-static PyObject *Binomial(PyObject *self, PyObject *args)
+static PyObject *wrap_binomial(PyObject *self, PyObject *args)
 {
     double n;
     int k;
@@ -17,7 +17,7 @@ static PyObject *Binomial(PyObject *self, PyObject *args)
     return Py_BuildValue("d", binomial(n, k));
 }
 
-static PyObject *Travel(PyObject *self, PyObject *args)
+static PyObject *wrap_travel(PyObject *self, PyObject *args)
 {
     char *dirname;
 
@@ -53,8 +53,8 @@ static PyObject *version(PyObject *self)
 }
 
 static PyMethodDef myMethods[] = {
-    {"binomial", Binomial, METH_VARARGS, "calculates binomial number"},
-    {"travel", Travel, METH_VARARGS, "travels through directories"},
+    {"binomial", wrap_binomial, METH_VARARGS, "calculates binomial number"},
+    {"travel", wrap_travel, METH_VARARGS, "travels through directories"},
     {"version", (PyCFunction)version, METH_NOARGS, "returns the version."},
     {NULL, NULL, 0, NULL}};
 

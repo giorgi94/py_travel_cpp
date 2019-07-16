@@ -7,6 +7,10 @@ module = Extension("myModule", sources=[
     "source/travel.cpp",
 ])
 
-setup(name="PackageName", version="1.0",
-      description="This is a package for myModule",
-      ext_modules=[module])
+setup(
+    name="PackageName",
+    version="1.0",
+    description="This is a package for myModule",
+    ext_modules=[module],
+    extra_compile_args=['-std=c++17']
+)
