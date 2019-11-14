@@ -1,6 +1,8 @@
-# Py_C_extensions
+# Py_Travel_CPP
 
-This project contains few examples how to create `c/c++` extensions for `python3`
+`Py_Travel_CPP` is an example of how `c/c++` extensions can be created for performance optimizations in `python3`.
+
+
 
 ## Resources
 

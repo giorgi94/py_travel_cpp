@@ -1,21 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <Python.h>
-#include "binomial.h"
+
 #include "travel.h"
-
-static PyObject *wrap_binomial(PyObject *self, PyObject *args)
-{
-    double n;
-    int k;
-
-    if (!PyArg_ParseTuple(args, "di", &n, &k))
-    {
-        return NULL;
-    }
-
-    return Py_BuildValue("d", binomial(n, k));
-}
 
 static PyObject *wrap_travel(PyObject *self, PyObject *args)
 {
@@ -53,19 +40,18 @@ static PyObject *version(PyObject *self)
 }
 
 static PyMethodDef myMethods[] = {
-    {"binomial", wrap_binomial, METH_VARARGS, "calculates binomial number"},
-    {"travel", wrap_travel, METH_VARARGS, "travels through directories"},
+    {"_travel", wrap_travel, METH_VARARGS, "travels through directories"},
     {"version", (PyCFunction)version, METH_NOARGS, "returns the version."},
     {NULL, NULL, 0, NULL}};
 
 static struct PyModuleDef myModule = {
     PyModuleDef_HEAD_INIT,
-    "myModule",
-    "My Module",
+    "lib",
+    "travels through directories",
     -1,
     myMethods};
 
-PyMODINIT_FUNC PyInit_myModule(void)
+PyMODINIT_FUNC PyInit_lib(void)
 {
     return PyModule_Create(&myModule);
 }

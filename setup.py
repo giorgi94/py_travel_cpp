@@ -1,16 +1,16 @@
 from distutils.core import setup, Extension
 
 
-module = Extension("myModule", sources=[
-    "source/wrap.cpp",
-    "source/binomial.cpp",
-    "source/travel.cpp",
+module = Extension("pytravel.lib", sources=[
+    "pytravel/source/wrap.cpp",
+    "pytravel/source/travel.cpp",
 ])
 
 setup(
-    name="PackageName",
+    name="PyTravel",
     version="1.0",
-    description="This is a package for myModule",
+    packages=['pytravel'],
+    description="travels through directories",
     ext_modules=[module],
-    extra_compile_args=['-std=c++17']
+    extra_compile_args=['-std=c++14']
 )
