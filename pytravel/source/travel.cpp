@@ -2,7 +2,7 @@
 
 void _travel(
     const std::string &dirname,
-    std::vector<std::pair<char, std::string>> &items)
+    std::list<filetype> &items)
 {
 
     if (DIR *dir = opendir(dirname.c_str()))
@@ -14,23 +14,26 @@ void _travel(
             if (strcmp(entry->d_name, "..") == 0)
                 continue;
 
-            std::pair<char, std::string> item;
+            filetype item;
 
-            std::string filename = dirname + entry->d_name;
+            std::string fullpath = dirname + entry->d_name;
 
-            item.second = filename;
+            item.fullpath = fullpath;
+            item.filename = entry->d_name;
 
             if ((entry->d_type & DT_DIR) == DT_DIR && !((entry->d_type & DT_LNK) == DT_LNK))
             {
-                item.first = 'd';
+
+                item.type = 'f';
+
                 items.push_back(item);
 
-                std::string dirname = filename + "/";
+                std::string dirname = fullpath + "/";
                 _travel(dirname, items);
             }
             else if ((entry->d_type & DT_REG) == DT_REG)
             {
-                item.first = 'f';
+                item.type = 'd';
                 items.push_back(item);
             }
         }
@@ -39,7 +42,7 @@ void _travel(
     }
 }
 
-std::vector<std::pair<char, std::string>> travel(std::string dirname)
+std::list<filetype> travel(std::string dirname)
 {
 
     if (*(--dirname.end()) != '/')
@@ -47,7 +50,7 @@ std::vector<std::pair<char, std::string>> travel(std::string dirname)
         dirname += '/';
     }
 
-    std::vector<std::pair<char, std::string>> items;
+    std::list<filetype> items;
 
     _travel(dirname, items);
 

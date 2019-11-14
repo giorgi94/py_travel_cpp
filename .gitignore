@@ -9,3 +9,6 @@
 build/
 bin/
 env/
+
+
+test/
