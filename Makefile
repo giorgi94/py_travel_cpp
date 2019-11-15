@@ -4,7 +4,7 @@ clean:
 	@rm -rf build
 
 install:
-	@python3 setup.py install
+	@env/bin/python3 setup.py install
 
 build:
-	@python3 setup.py build
+	@env/bin/python3 setup.py build

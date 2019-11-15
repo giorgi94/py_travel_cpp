@@ -21,10 +21,18 @@ void _travel(
             item.fullpath = fullpath;
             item.filename = entry->d_name;
 
+            struct stat file_stats;
+
+            stat(item.fullpath.c_str(), &file_stats);
+
+            item.ctime = (int)file_stats.st_ctime;
+            item.mtime = (int)file_stats.st_mtime;
+
             if ((entry->d_type & DT_DIR) == DT_DIR && !((entry->d_type & DT_LNK) == DT_LNK))
             {
 
-                item.type = 'f';
+                item.isdir = true;
+                item.size = 0;
 
                 items.push_back(item);
 
@@ -33,7 +41,9 @@ void _travel(
             }
             else if ((entry->d_type & DT_REG) == DT_REG)
             {
-                item.type = 'd';
+                item.isdir = false;
+                item.size = file_stats.st_size;
+
                 items.push_back(item);
             }
         }

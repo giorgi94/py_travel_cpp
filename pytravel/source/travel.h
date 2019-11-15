@@ -5,14 +5,18 @@
 #include <list>
 
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <dirent.h>
 #include <string.h>
 
 struct filetype
 {
-    char type;
+    bool isdir;
     std::string filename;
     std::string fullpath;
+    int size;
+    int ctime;
+    int mtime;
 };
 
 void _travel(

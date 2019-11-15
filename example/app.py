@@ -1,4 +1,7 @@
-from pytravel.lib import _travel
+from pytravel import travel
+
+items = travel("/home/gio/Pictures/wallpaper")
 
 
-print(_travel("/home/gio/Desktop/playground"))
+for item in items[:5]:
+    print(item)

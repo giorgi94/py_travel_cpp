@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <Python.h>
+#include <exception>
 
 #include "travel.h"
 
@@ -13,22 +13,41 @@ static PyObject *wrap_travel(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    auto items = travel((std::string)dirname);
-    int size = items.size();
+    PyObject *seq = PyList_New(0);
 
-    PyObject *seq = PyList_New(size);
+    std::list<filetype> items;
 
-    for (int i = 0; i < size; i++)
+    try
     {
-        auto item = items[i];
+        items = travel((std::string)dirname);
+    }
+    catch (const std::runtime_error &re)
+    {
+        std::cerr << "Runtime error: " << re.what() << std::endl;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error occurred: " << e.what() << std::endl;
+    }
+    catch (...)
+    {
+        std::cerr << "Unknown failure occurred. Possible memory corruption" << std::endl;
+    }
 
-        PyList_SetItem(seq, i,
-                       Py_BuildValue(
-                           "{s:s,s:s}",
-                           "type",
-                           item.first == 'd' ? "directory" : "file",
-                           "path",
-                           item.second.c_str()));
+    int index = 0;
+
+    for (auto it = items.begin(); it != items.end(); it++)
+    {
+        PyList_Append(seq,
+                      Py_BuildValue(
+                          "{s:i,s:s,s:s,s:i,s:i}",
+                          "isdir", (*it).isdir ? 1 : 0,
+                          "filename", (*it).filename.c_str(),
+                          "fullpath", (*it).fullpath.c_str(),
+                          "ctime", (*it).ctime,
+                          "mtime", (*it).mtime));
+
+        index++;
     }
 
     return seq;
