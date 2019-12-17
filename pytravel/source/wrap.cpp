@@ -34,20 +34,17 @@ static PyObject *wrap_travel(PyObject *self, PyObject *args)
         std::cerr << "Unknown failure occurred. Possible memory corruption" << std::endl;
     }
 
-    int index = 0;
-
     for (auto it = items.begin(); it != items.end(); it++)
     {
         PyList_Append(seq,
                       Py_BuildValue(
-                          "{s:i,s:s,s:s,s:i,s:i}",
+                          "{s:i,s:s,s:s,s:i,s:i,s:i}",
                           "isdir", (*it).isdir ? 1 : 0,
                           "filename", (*it).filename.c_str(),
                           "fullpath", (*it).fullpath.c_str(),
                           "ctime", (*it).ctime,
-                          "mtime", (*it).mtime));
-
-        index++;
+                          "mtime", (*it).mtime,
+                          "size", (*it).size));
     }
 
     return seq;
